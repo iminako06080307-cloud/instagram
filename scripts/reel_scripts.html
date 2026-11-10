@@ -1,0 +1,174 @@
+<title>ミキさんのリール台本</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* Layout: one script at a time, picked by tabs; each cut is a row: phone-style caption on the left, words to say on the right */
+:root {
+  --bg: #fbf8fa;
+  --surface: #ffffff;
+  --fg: #2b2330;
+  --muted: #776c7d;
+  --line: #e9e1ec;
+  --accent: #8a4a7a;
+  --accent-soft: #f3e6ef;
+  --screen: #2b2330;
+  --screen-fg: #ffffff;
+  --display: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Noto Sans JP", sans-serif;
+  --body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1c1720; --surface: #262029; --fg: #f1eaf3; --muted: #b3a7b8; --line: #3a3140;
+    --accent: #e0a5cf; --accent-soft: #3a2a37; --screen: #0f0c11; --screen-fg: #ffffff; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1c1720; --surface: #262029; --fg: #f1eaf3; --muted: #b3a7b8; --line: #3a3140;
+  --accent: #e0a5cf; --accent-soft: #3a2a37; --screen: #0f0c11; --screen-fg: #ffffff; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 24px; }
+h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0; text-wrap: balance; }
+.lead { margin: 4px 0 0; color: var(--muted); }
+.how { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .9rem; color: var(--muted); }
+.how b { color: var(--fg); }
+.key { display: inline-block; padding: 0 8px; border-radius: 6px; font-size: .8rem; font-weight: 700; }
+.key.say { background: var(--accent-soft); color: var(--accent); }
+.key.tel { background: var(--screen); color: var(--screen-fg); }
+
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tab { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.rec { font-size: .75rem; margin-left: 6px; opacity: .85; }
+
+.script-head { display: grid; gap: 4px; }
+.script-head h2 { font-family: var(--display); font-weight: 800; font-size: 1.35rem; margin: 0; text-wrap: balance; }
+.script-head p { margin: 0; color: var(--muted); }
+
+.cuts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.cut { display: grid; grid-template-columns: 40px 200px 1fr; gap: 16px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.num { font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--accent); text-align: center; padding-top: 6px; font-variant-numeric: tabular-nums; }
+.tel-box { background: var(--screen); color: var(--screen-fg); border-radius: 10px; padding: 14px 12px; font-family: var(--display); font-weight: 800; font-size: 1.05rem; line-height: 1.45; text-align: center; min-height: 64px; display: grid; place-items: center; }
+.say-box { min-width: 0; }
+.say-box p { margin: 0; font-size: 1.15rem; font-weight: 500; line-height: 1.8; }
+.say-box .note { margin-top: 6px; font-size: .85rem; color: var(--muted); font-weight: 400; }
+.sec { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.tips { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; }
+.tips h3 { margin: 0 0 8px; font-size: 1rem; }
+.tips ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+
+@media (max-width: 640px) {
+  .cut { grid-template-columns: 1fr; gap: 10px; }
+  .num { text-align: left; padding: 0; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>リール台本（30秒）</h1>
+    <p class="lead">@50diet_miki ／ 受講生さんへのフィードバック動画でよく出ていた悩みから作りました</p>
+  </header>
+
+  <div class="how">
+    <span><span class="key tel">黒い枠</span> ＝ 画面に出す文字</span>
+    <span><span class="key say">右側</span> ＝ 話す言葉</span>
+    <span><b>1枚 ＝ 1カット</b>。上から順に撮ってください</span>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="台本をえらぶ" id="tabs"></div>
+
+  <section id="script" aria-live="polite"></section>
+
+  <div class="tips">
+    <h3>撮るときのポイント</h3>
+    <ul>
+      <li>動画が始まった瞬間に話し始める（最初に無言の間を作らない）</li>
+      <li>画面の文字は大きく、太く</li>
+      <li>「1つめ」「2つめ」は指で数を見せる</li>
+      <li>受講生さんの写真や成果を出すときは、本人の許可をもらう</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const SCRIPTS = [
+  {
+    id: "kaishoku",
+    tab: "① 会食ルール",
+    rec: true,
+    title: "会食が多くても太らない3つのルール",
+    sub: "いちばんおすすめ。年末の会食シーズンに合います。",
+    cuts: [
+      { s: "0〜3秒", tel: "会食でも太らない\n3つのルール", say: "会食が多いのに太らない人は、3つのことしかしていません。", note: "レストランやグラスの映像から始める" },
+      { s: "3〜9秒", tel: "① お酒と同じだけ\nお水", say: "1つめ。お酒と同じだけ、お水を飲む。", note: "指で「1」" },
+      { s: "9〜15秒", tel: "② 野菜から食べる", say: "2つめ。野菜から食べて、ご飯やパンは最後。", note: "指で「2」" },
+      { s: "15〜20秒", tel: "③ お腹いっぱいなら\n残す", say: "3つめ。お腹いっぱいになったら、残していい。", note: "指で「3」。やさしく笑う" },
+      { s: "20〜26秒", tel: "次の日に\n抜くのはNG", say: "次の日に、ご飯を抜くのはやめてください。いつもの食事で、2〜3日ゆるく整えれば大丈夫。", note: "" },
+      { s: "26〜30秒", tel: "保存してね", say: "会食は、楽しんでいいんです。保存して、会食の前に見てくださいね。", note: "画面の下を指さす" }
+    ]
+  },
+  {
+    id: "tabenasugi",
+    tab: "② 食べなさすぎ",
+    title: "食べてないのに痩せないのはなぜ？",
+    sub: "「食べる量を減らしすぎて体重が動かない」悩みから。",
+    cuts: [
+      { s: "0〜4秒", tel: "減らしてるのに痩せない…\n食べなさすぎかも", say: "食べる量を減らしているのに、体重が減らない方。それ、食べなさすぎかもしれません。", note: "顔のアップ。すぐ話し始める" },
+      { s: "4〜11秒", tel: "少なすぎると\n体が節約モードに", say: "食べる量が少なすぎると、体は「節約しなきゃ」と思って、やせにくくなります。", note: "" },
+      { s: "11〜16秒", tel: "50代は\n筋肉が減りやすい", say: "しかも50代は、筋肉がどんどん減っていく年代です。", note: "" },
+      { s: "16〜25秒", tel: "毎食 お肉は\n手のひら1枚分", say: "だから、毎食、お肉なら手のひら1枚分。お魚なら切り身1切れ。しっかり食べてください。", note: "手のひらを見せる" },
+      { s: "25〜30秒", tel: "コメントに\n「量」と書いてね", say: "あなたに合う量を知りたい方は、コメントに「量」と書いてくださいね。", note: "画面の下を指さす" }
+    ]
+  },
+  {
+    id: "amaimono",
+    tab: "③ 甘いもの",
+    title: "甘いもの、やめなくていいです",
+    sub: "「間食がやめられない」悩みから。",
+    cuts: [
+      { s: "0〜3秒", tel: "甘いものは\nやめずに半分", say: "甘いもの、やめなくていいです。そのかわり、半分にしてください。", note: "和菓子やプリンを手に持って" },
+      { s: "3〜8秒", tel: "がまんすると\n反動がくる", say: "がまんすると、あとで、もっと食べたくなりますよね。", note: "うなずきながら" },
+      { s: "8〜17秒", tel: "お気に入りのお皿に半分\n＋お茶でゆっくり", say: "お気に入りのお皿に、半分だけのせて、好きなお茶と一緒に、ゆっくり食べる。それだけで、ちゃんと満足できます。", note: "お皿に盛る手元、お茶を注ぐ映像" },
+      { s: "17〜24秒", tel: "果物も\nじつは「おやつ」", say: "それから、果物。シャインマスカットも、柿も、じつは「おやつ」なんです。", note: "果物の写真" },
+      { s: "24〜30秒", tel: "保存してね", say: "がまんより、上手に楽しむ。保存して、甘いものが欲しい日に見てくださいね。", note: "笑顔で画面の下を指さす" }
+    ]
+  }
+];
+
+const tabsEl = document.getElementById("tabs");
+const scriptEl = document.getElementById("script");
+
+function esc(t) { return t.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function render(id) {
+  const sc = SCRIPTS.find(x => x.id === id) || SCRIPTS[0];
+  tabsEl.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.id === sc.id ? "true" : "false"));
+  scriptEl.innerHTML = `
+    <div class="script-head"><h2>${esc(sc.title)}</h2><p>${esc(sc.sub)}</p></div>
+    <ol class="cuts" style="margin-top:16px">
+      ${sc.cuts.map((c, i) => `
+        <li class="cut">
+          <div class="num">${i + 1}</div>
+          <div class="tel-box">${esc(c.tel).replace(/\n/g, "<br>")}</div>
+          <div class="say-box">
+            <div class="sec">${esc(c.s)}</div>
+            <p>${esc(c.say)}</p>
+            ${c.note ? `<p class="note">撮り方：${esc(c.note)}</p>` : ""}
+          </div>
+        </li>`).join("")}
+    </ol>`;
+}
+
+SCRIPTS.forEach(sc => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.type = "button"; b.role = "tab"; b.dataset.id = sc.id; b.id = "tab-" + sc.id;
+  b.innerHTML = esc(sc.tab) + (sc.rec ? '<span class="rec">おすすめ</span>' : "");
+  b.addEventListener("click", () => { location.hash = sc.id; render(sc.id); });
+  tabsEl.appendChild(b);
+});
+
+render(location.hash.slice(1));
+window.addEventListener("hashchange", () => render(location.hash.slice(1)));
+</script>
