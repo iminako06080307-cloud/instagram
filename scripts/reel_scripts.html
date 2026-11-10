@@ -55,6 +55,11 @@ h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0
 .say-box .note { margin-top: 6px; font-size: .85rem; color: var(--muted); font-weight: 400; }
 .sec { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
+.copy-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.copy-btn { font: inherit; font-weight: 700; padding: 10px 18px; border-radius: 10px; border: none; background: var(--accent); color: var(--bg); cursor: pointer; }
+.copy-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.copy-msg { font-size: .9rem; color: var(--muted); }
+.copy-fallback { width: 100%; min-height: 160px; font: inherit; font-size: .9rem; padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
 .tips { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; }
 .tips h3 { margin: 0 0 8px; font-size: 1rem; }
 .tips ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
@@ -147,6 +152,11 @@ function render(id) {
   tabsEl.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.id === sc.id ? "true" : "false"));
   scriptEl.innerHTML = `
     <div class="script-head"><h2>${esc(sc.title)}</h2><p>${esc(sc.sub)}</p></div>
+    <div class="copy-row">
+      <button class="copy-btn" type="button" id="copy-btn">この台本をコピー（LINE・メールに貼れます）</button>
+      <span class="copy-msg" id="copy-msg" role="status"></span>
+    </div>
+    <textarea class="copy-fallback" id="copy-fallback" readonly hidden aria-label="コピー用の台本"></textarea>
     <ol class="cuts" style="margin-top:16px">
       ${sc.cuts.map((c, i) => `
         <li class="cut">
@@ -159,6 +169,34 @@ function render(id) {
           </div>
         </li>`).join("")}
     </ol>`;
+  document.getElementById("copy-btn").addEventListener("click", () => copyScript(sc));
+}
+
+function toText(sc) {
+  const lines = ["【リール台本】" + sc.title, "（約30秒）", ""];
+  sc.cuts.forEach((c, i) => {
+    lines.push("■カット" + (i + 1) + "（" + c.s + "）");
+    lines.push("話す：" + c.say);
+    lines.push("画面の文字：" + c.tel.replace(/\n/g, " "));
+    if (c.note) lines.push("撮り方：" + c.note);
+    lines.push("");
+  });
+  return lines.join("\n").trim();
+}
+
+function copyScript(sc) {
+  const text = toText(sc);
+  const msg = document.getElementById("copy-msg");
+  const fb = document.getElementById("copy-fallback");
+  const showFallback = () => {
+    fb.value = text; fb.hidden = false; fb.focus(); fb.select();
+    msg.textContent = "下の文章を長押し（または選択）してコピーしてください";
+  };
+  try {
+    navigator.clipboard.writeText(text).then(() => {
+      msg.textContent = "コピーしました。LINEやメールに貼り付けて送れます";
+    }, showFallback);
+  } catch (e) { showFallback(); }
 }
 
 SCRIPTS.forEach(sc => {
